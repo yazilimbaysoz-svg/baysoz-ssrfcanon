@@ -1,0 +1,55 @@
+# Baysöz Labs <baysozlabs@proton.me> — baysoz-ssrfcanon
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "baysoz-ssrfcanon"
+version = "1.0.0"
+description = "Offline SSRF guard differential oracle: URL/IP canonicalization across parser profiles, adversarial bypass corpus, and SARIF CI gates"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+maintainers = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+keywords = ["appsec", "redteam", "ssrf", "sarif", "canonicalization", "security"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "ruff>=0.17"]
+
+[project.urls]
+Homepage = "https://github.com/yazilimbaysoz-svg/baysoz-ssrfcanon"
+Source = "https://github.com/yazilimbaysoz-svg/baysoz-ssrfcanon"
+Issues = "https://github.com/yazilimbaysoz-svg/baysoz-ssrfcanon/issues"
+Maintainer = "mailto:baysozlabs@proton.me"
+
+[project.scripts]
+baysoz-ssrfcanon = "baysoz_ssrfcanon.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/baysoz_ssrfcanon"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "S", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,36 @@
+# Baysöz Labs <baysozlabs@proton.me> — baysoz-ssrfcanon
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          enable-cache: true
+      - name: Set up Python 3.13
+        run: uv python install 3.13
+      - name: Install project and test tooling
+        run: |
+          uv venv
+          uv pip install -e .
+          uv pip install pytest ruff
+      - name: Tests
+        run: uv run pytest -q
+      - name: Lint
+        run: uv run ruff check --select E,F,W,S,B .
+      - name: Security scan
+        uses: semgrep/semgrep-action@713efdd345f3035192eaa63f56867b88e63e4e5d # v1
+        with:
+          config: p/default
+      - name: Live adversarial self-check
+        run: uv run baysoz-ssrfcanon selftest
